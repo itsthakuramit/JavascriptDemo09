@@ -1,0 +1,44 @@
+{
+  "players": [
+    {
+      "id": 102,
+      "playername": "Saina",
+      "sports": "Badminton"
+    },
+    {
+      "id": 201,
+      "playername": "Maradona",
+      "sports": "Football"
+    },
+    {
+      "id": "301",
+      "playername": "Sachin",
+      "sports": "Cricket"
+    },
+    {
+      "id": "401",
+      "playername": "Virat",
+      "sports": "Cricket"
+    },
+    {
+      "id": "501",
+      "playername": "Messi",
+      "sports": "Football"
+    },
+    {
+      "id": "601",
+      "playername": "Sania",
+      "sports": "Tennis"
+    },
+    {
+      "id": "701",
+      "playername": "Rolando",
+      "sports": "Football"
+    },
+    {
+      "id": "801",
+      "playername": "Sindhu",
+      "sports": "Badminton"
+    }
+  ]
+}
