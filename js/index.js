@@ -1,15 +1,12 @@
-function getAllPlayers() {
+async function getAllPlayers() {
 
-    let response = fetch('http://localhost:3000/players')
+    try {
+        let response = await fetch('http://localhost:3000/players')
+        let players = await response.json();
 
-    response
-        .then((data) => {
-            return data.json();
-        })
-        .then((players) => {
-            let playerlist = '';
-            players.forEach(player => {
-                playerlist += `<tr>
+        let playerlist = '';
+        players.forEach(player => {
+            playerlist += `<tr>
                     <td>${player.id}</td>
                     <td>${player.playername}</td>
                     <td>${player.sports}</td>
@@ -20,45 +17,40 @@ function getAllPlayers() {
                         <input type="button" onclick="deletePlayer('${player.id}')" value="Delete" /></td>
                     </td>
                     </tr>`
-            });
-
-            document.getElementById("playerlist").innerHTML =
-                `<table border=\"2\"><tr><td>PlayerId</td><td>Player Name</td><td>Sports</td></tr>${playerlist}</table>`;
-        })
-        .catch((err) => {
-            console.log(err)
         });
 
+        document.getElementById("playerlist").innerHTML =
+            `<table border=\"2\"><tr><td>PlayerId</td><td>Player Name</td><td>Sports</td></tr>${playerlist}</table>`;
+    } catch (error) {
+        console.log(error)
+    }
 }
+
 
 getAllPlayers();
 
-function getPlayerById(playerid) {
+async function getPlayerById(playerid) {
 
-    return fetch(`http://localhost:3000/players/${playerid}`, {
+    let response = await fetch(`http://localhost:3000/players/${playerid}`, {
         method: 'GET'
     });
 
+    return response;
+
 }
 
 
-function deletePlayer(playerid) {
+async function deletePlayer(playerid) {
 
-    let response = fetch(`http://localhost:3000/players/${playerid}`, {
+    let response = await fetch(`http://localhost:3000/players/${playerid}`, {
         method: 'DELETE'
     });
 
-    response
-        .then((data) => {
-            getAllPlayers();
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+    getAllPlayers();
 
 }
 
-function addPlayer() {
+async function addPlayer() {
 
     let newplayerid = document.getElementById("id").value;
     let newplayername = document.getElementById("name").value;
@@ -70,43 +62,29 @@ function addPlayer() {
         "sports": newsports
     }
 
-    console.log(newplayerid)
-    getPlayerById(newPlayer.id)
-        .then((data) => data.json())
-        .then((existingPlayer) => {
-            console.log(existingPlayer.id)
-            if (existingPlayer.id === undefined) {
-                let response = fetch('http://localhost:3000/players', {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(newPlayer)
-                });
 
-                response
-                    .then((data) => {
-                        getAllPlayers();
-                        clearForm();
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-            } else {
-                updatePlayer();
-            }
+    console.log(newPlayer)
+    let response = await getPlayerById(newPlayer.id);
+    let existingPlayer = await response.json();
+    console.log(existingPlayer)
+    if (existingPlayer.id === undefined) {
+        let response = await fetch('http://localhost:3000/players', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newPlayer)
+        });
 
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-
-
-
+        getAllPlayers();
+        clearForm();
+    } else {
+        updatePlayer();
+    }
 }
 
 
-function updatePlayer() {
+async function updatePlayer() {
 
     let playertobeupdated = {
         "id": document.getElementById("id").value,
@@ -114,28 +92,21 @@ function updatePlayer() {
         "sports": document.getElementById("sports").value
     }
 
-    let response = fetch(`http://localhost:3000/players/${playertobeupdated.id}`, {
+    let response = await fetch(`http://localhost:3000/players/${playertobeupdated.id}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(playertobeupdated)
     });
-
-    response
-        .then((data) => {
-            getAllPlayers();
-            clearForm();
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+    getAllPlayers();
+    clearForm();
 
 }
 
-function editPlayer(id,playername,sports) {
+function editPlayer(id, playername, sports) {
     document.getElementById("id").value = id;
-    document.getElementById("id").disabled=true; 
+    document.getElementById("id").disabled = true;
     document.getElementById("name").value = playername;
     document.getElementById("sports").value = sports;
 }

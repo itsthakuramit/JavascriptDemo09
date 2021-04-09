@@ -13,7 +13,7 @@
     {
       "id": "301",
       "playername": "Sachin",
-      "sports": "Cricket"
+      "sports": "Crickett"
     },
     {
       "id": "401",
@@ -31,14 +31,14 @@
       "sports": "Tennis"
     },
     {
-      "id": "701",
-      "playername": "Rolando",
-      "sports": "Football"
-    },
-    {
       "id": "801",
       "playername": "Sindhu",
       "sports": "Badminton"
+    },
+    {
+      "id": "901",
+      "playername": "John Mcnroe",
+      "sports": "Tennis"
     }
   ]
 }
